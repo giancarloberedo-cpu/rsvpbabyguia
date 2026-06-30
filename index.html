@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our First Year Anniversary</title>
+  <style>
+    :root {
+      --artifact-background: var(--theme-background, #ffffff);
+      --artifact-background-light: var(--theme-background-light, #f6f6f6);
+      --artifact-background-mid: var(--theme-background-mid, #eeeeee);
+      --artifact-border-light: var(--theme-border-light, #e5e5e5);
+      --artifact-border-dark: var(--theme-border-dark, #cccccc);
+      --artifact-primary-brand: var(--theme-primary-brand, #343ced);
+      --artifact-primary-highlight: var(--theme-primary-highlight, #1b1b1b);
+      --artifact-primary-hover: var(--theme-primary-hover, #404040);
+      --artifact-selected: var(--theme-selected, #e8e8e8);
+      --artifact-text-primary: var(--theme-text-primary, #1b1b1b);
+      --artifact-text-secondary: var(--theme-text-secondary, #727272);
+      --artifact-text-highlight: var(--theme-text-highlight, #fff8e5);
+
+      --artifact-romance-bg: #fff4f7;
+      --artifact-romance-surface: #fff8fa;
+      --artifact-romance-accent: #d76a8c;
+      --artifact-romance-accent-strong: #b94f70;
+      --artifact-romance-accent-soft: #f4d4de;
+      --artifact-romance-text: #4d2330;
+      --artifact-romance-text-soft: #7c4b59;
+      --artifact-shadow: 0 18px 50px rgba(0,0,0,0.08);
+      --artifact-overlay: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.0));
+    }
+
+    html[data-theme='dark'] {
+      --artifact-romance-bg: #22161a;
+      --artifact-romance-surface: #2c1e24;
+      --artifact-romance-accent: #f0a1b8;
+      --artifact-romance-accent-strong: #ffc1d1;
+      --artifact-romance-accent-soft: #4a3038;
+      --artifact-romance-text: #ffe8ef;
+      --artifact-romance-text-soft: #d8b4c0;
+      --artifact-shadow: 0 18px 50px rgba(0,0,0,0.24);
+      --artifact-overlay: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.0));
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--artifact-background);
+      color: var(--artifact-text-primary);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, var(--artifact-romance-accent-soft) 0%, transparent 28%),
+        radial-gradient(circle at bottom right, var(--artifact-selected) 0%, transparent 22%),
+        var(--artifact-background);
+      min-height: 100vh;
+    }
+
+    .shell {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--artifact-border-light);
+      border-radius: 28px;
+      background: var(--artifact-romance-surface);
+      box-shadow: var(--artifact-shadow);
+      min-height: 72vh;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: stretch;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--artifact-overlay);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-media {
+      position: relative;
+      min-height: 420px;
+      background: var(--artifact-background-mid);
+    }
+
+    .hero-media img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .hero-media img.active { opacity: 1; }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      padding: 44px 38px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+      background: linear-gradient(135deg, var(--artifact-romance-surface), var(--artifact-background));
+      color: var(--artifact-romance-text);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--artifact-romance-accent-soft);
+      color: var(--artifact-romance-text);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(36px, 5vw, 60px);
+      line-height: 0.98;
+      color: var(--artifact-romance-text);
+      letter-spacing: -0.03em;
+    }
+
+    .lead {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--artifact-romance-text-soft);
+      max-width: 28ch;
+    }
+
+    .invitation-card {
+      padding: 18px 20px;
+      border-radius: 20px;
+      background: var(--artifact-background);
+      border: 1px solid var(--artifact-border-light);
+      color: var(--artifact-text-primary);
+    }
+
+    .invitation-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 15px;
+      color: var(--artifact-primary-highlight);
+    }
+
+    .invitation-card p {
+      margin: 0;
+      line-height: 1.7;
+      color: var(--artifact-text-secondary);
+      font-size: 15px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-top: 4px;
+    }
+
+    .button {
+      appearance: none;
+      border: 1px solid var(--artifact-border-dark);
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 140px;
+    }
+
+    .button:focus-visible {
+      outline: 3px solid var(--artifact-selected);
+      outline-offset: 2px;
+    }
+
+    .button.primary {
+      background: var(--artifact-romance-accent);
+      border-color: var(--artifact-romance-accent);
+      color: var(--artifact-background);
+      box-shadow: var(--artifact-shadow);
+    }
+
+    .button.secondary {
+      background: var(--artifact-background);
+      border-color: var(--artifact-border-dark);
+      color: var(--artifact-text-primary);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button.primary:hover {
+      background: var(--artifact-romance-accent-strong);
+      border-color: var(--artifact-romance-accent-strong);
+    }
+
+    .button.secondary:hover {
+      background: var(--artifact-background-light);
+    }
+
+    .note {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--artifact-text-secondary);
+    }
+
+    .gallery-wrap {
+      margin-top: 26px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .gallery-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .gallery-head h2 {
+      margin: 0;
+      font-size: 24px;
+      color: var(--artifact-text-primary);
+    }
+
+    .gallery-head p {
+      margin: 0;
+      color: var(--artifact-text-secondary);
+      line-height: 1.6;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+
+    .photo {
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid var(--artifact-border-light);
+      background: var(--artifact-background-light);
+      min-height: 200px;
+      box-shadow: var(--artifact-shadow);
+      transform: translateY(18px);
+      opacity: 0;
+      animation: rise 0.7s ease forwards;
+    }
+
+    .photo:nth-child(1) { grid-column: span 7; animation-delay: 0.08s; }
+    .photo:nth-child(2) { grid-column: span 5; animation-delay: 0.14s; }
+    .photo:nth-child(3) { grid-column: span 4; animation-delay: 0.2s; }
+    .photo:nth-child(4) { grid-column: span 4; animation-delay: 0.26s; }
+    .photo:nth-child(5) { grid-column: span 4; animation-delay: 0.32s; }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .photo:hover img { transform: scale(1.03); }
+
+    .photo figcaption {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.78);
+      color: var(--artifact-romance-text);
+      font-size: 13px;
+      line-height: 1.45;
+      backdrop-filter: blur(10px);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--artifact-text-secondary);
+      font-size: 13px;
+    }
+
+    .hearts {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      color: var(--artifact-romance-accent);
+      font-size: 18px;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media screen and (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .hero-media {
+        min-height: 320px;
+      }
+      .hero-copy {
+        padding: 28px 22px 30px;
+      }
+      .gallery {
+        grid-template-columns: 1fr 1fr;
+      }
+      .photo:nth-child(1), .photo:nth-child(2), .photo:nth-child(3), .photo:nth-child(4), .photo:nth-child(5) {
+        grid-column: span 1;
+      }
+    }
+
+    @media screen and (max-width: 560px) {
+      .shell {
+        padding: 16px 12px 36px;
+      }
+      .hero {
+        border-radius: 22px;
+      }
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+      .actions {
+        flex-direction: column;
+      }
+      .button {
+        width: 100%;
+      }
+      .lead {
+        max-width: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+      .photo {
+        opacity: 1;
+        transform: none;
+      }
+      .hero-media img {
+        opacity: 1 !important;
+      }
+    }
+
+    @media print {
+      body {
+        margin: 0;
+        padding: 0.4in 0.6in;
+        background: #fff;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .container, .dashboard, .shell, main {
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+
+      [style*="position:sticky"], [style*="position: sticky"],
+      [class*="topbar"], [class*="navbar"], [class*="header"][class*="sticky"] {
+        position: static !important;
+      }
+
+      section, [class*="section"], .header {
+        break-inside: avoid;
+        margin-bottom: 20px !important;
+      }
+
+      [class*="card"], [class*="Card"] {
+        break-inside: avoid;
+        padding: 18px !important;
+        box-shadow: none !important;
+        border: 1px solid rgba(0,0,0,0.08);
+      }
+
+      [class*="grid"], [class*="row"] {
+        gap: 10px !important;
+        margin-bottom: 20px !important;
+      }
+
+      [class*="chart"], [class*="Chart"] {
+        break-inside: avoid;
+        height: 240px !important;
+      }
+
+      [class*="chart"][class*="tall"], [class*="Chart"][class*="tall"],
+      [class*="chart"][class*="full"], [class*="Chart"][class*="full"] {
+        height: 280px !important;
+      }
+
+      table, thead, .funnel, .heatmap, .list, .goals {
+        break-inside: avoid;
+      }
+
+      [class*="quote-list"], [class*="scroll"],
+      [style*="max-height"], [style*="overflow"] {
+        max-height: none !important;
+        overflow: visible !important;
+      }
+
+      [class*="tab-panel"], [class*="tabpanel"] {
+        display: block !important;
+      }
+
+      [class*="tab-bar"], [class*="tabs"]:not([class*="panel"]) {
+        display: none !important;
+      }
+
+      [class*="fade"], [class*="animate"], [class*="slide"] {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      button, [role="button"], .interactive-only {
+        display: none !important;
+      }
+
+      .hero {
+        grid-template-columns: 1fr 1fr;
+        min-height: auto;
+      }
+
+      .hero-media {
+        min-height: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-media" aria-label="Featured anniversary photo slideshow">
+        <img src="/api/v1/downloadchatfile/433df69cb2da47bdbda1f390a2182099" alt="Formal couple portrait" class="active" />
+        <img src="/api/v1/downloadchatfile/e9bdf34ce64545f3941e8f8c89dbf2a0" alt="Couple selfie in the city" />
+        <img src="/api/v1/downloadchatfile/850e79a24367479ea970eb3e427698aa" alt="Couple dinner date" />
+        <img src="/api/v1/downloadchatfile/92b9c23137624e338f6c05eae74e0f86" alt="Couple with bouquet at dinner" />
+        <img src="/api/v1/downloadchatfile/b2b1e3df453d46a8a9cb5e2e8e954fb9" alt="Sunny outdoor couple selfie" />
+      </div>
+
+      <div class="hero-copy">
+        <span class="eyebrow">First year anniversary invitation</span>
+        <h1>Will you celebrate our first year with me?</h1>
+        <p class="lead">One year of laughter, comfort, memories, and choosing each other. I made this little invitation just for you because our first anniversary deserves something personal.</p>
+
+        <div class="invitation-card">
+          <strong>My invitation</strong>
+          <p>I want to spend our first anniversary with you and make another memory we’ll both keep close. If your answer is yes, send it with one tap. If it’s no, the page can send that too.</p>
+        </div>
+
+        <div class="actions">
+          <a class="button primary" href="mailto:giancarloberedo@gmail.com?subject=Yes%20for%20our%20first%20anniversary&body=Hi%20love%2C%0A%0AMy%20answer%20is%20yes.%20I%20would%20love%20to%20celebrate%20our%20first%20anniversary%20with%20you.%0A%0ALove%2C">Yes, I will</a>
+          <a class="button secondary" href="mailto:giancarloberedo@gmail.com?subject=No%20for%20our%20first%20anniversary&body=Hi%20love%2C%0A%0AThank%20you%20for%20the%20invitation.%20My%20answer%20is%20no.%0A%0ALove%2C">No, I can’t</a>
+        </div>
+
+        <p class="note">Tapping a button opens her email app with the RSVP message already filled in to your email address.</p>
+      </div>
+    </section>
+
+    <section class="gallery-wrap">
+      <div class="gallery-head">
+        <div>
+          <h2>A few of my favorite moments with you</h2>
+          <p>Five snapshots from the story we’ve already started together.</p>
+        </div>
+        <div class="hearts" aria-hidden="true"><span>♡</span><span>♡</span><span>♡</span></div>
+      </div>
+
+      <div class="gallery">
+        <figure class="photo">
+          <img src="/api/v1/downloadchatfile/433df69cb2da47bdbda1f390a2182099" alt="Formal couple portrait" />
+          <figcaption>One of those moments where we looked dressed up, but still felt completely like us.</figcaption>
+        </figure>
+        <figure class="photo">
+          <img src="/api/v1/downloadchatfile/e9bdf34ce64545f3941e8f8c89dbf2a0" alt="Couple selfie in the city" />
+          <figcaption>A happy day outside, with the kind of smile that only shows up when I’m with you.</figcaption>
+        </figure>
+        <figure class="photo">
+          <img src="/api/v1/downloadchatfile/850e79a24367479ea970eb3e427698aa" alt="Couple dinner date" />
+          <figcaption>A simple date turned into another memory I never wanted to end.</figcaption>
+        </figure>
+        <figure class="photo">
+          <img src="/api/v1/downloadchatfile/92b9c23137624e338f6c05eae74e0f86" alt="Couple with bouquet at dinner" />
+          <figcaption>Flowers, dinner, and the kind of warmth that made the whole night feel special.</figcaption>
+        </figure>
+        <figure class="photo">
+          <img src="/api/v1/downloadchatfile/b2b1e3df453d46a8a9cb5e2e8e954fb9" alt="Sunny outdoor couple selfie" />
+          <figcaption>Sunlight, soft smiles, and one more reminder that loving you feels easy.</figcaption>
+        </figure>
+      </div>
+
+      <p class="footer-note">Made with love for one very special yes.</p>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll('.hero-media img'));
+      if (slides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        let index = 0;
+        setInterval(() => {
+          slides[index].classList.remove('active');
+          index = (index + 1) % slides.length;
+          slides[index].classList.add('active');
+        }, 3200);
+      } else {
+        slides.forEach((img, i) => img.classList.toggle('active', i === 0));
+      }
+    }());
+
+    window.GleanBridge.postMessage({
+      actionId: 'export-pdf',
+      type: 'glean-add-menu',
+      metadata: { label: 'Export as PDF', icon: 'export' }
+    });
+    window.GleanBridge.onMessage('action', function(data) {
+      if (data.actionId === 'export-pdf') window.print();
+    });
+
+    function prepareChartsForPrint() {
+      document.querySelectorAll('[_echarts_instance_]').forEach(function(el) {
+        var chart = echarts.getInstanceByDom(el);
+        if (!chart) return;
+        var img = new Image();
+        img.src = chart.getDataURL({ type: 'png', pixelRatio: 2 });
+        img.className = 'print-chart-img';
+        img.style.cssText =
+          'width:100%;height:100%;object-fit:contain;' +
+          'position:absolute;top:0;left:0;z-index:10;';
+        el.dataset.prevPosition = el.style.position;
+        el.style.position = 'relative';
+        el.appendChild(img);
+      });
+    }
+
+    function cleanUpAfterPrint() {
+      document.querySelectorAll('[_echarts_instance_]').forEach(function(el) {
+        var img = el.querySelector('.print-chart-img');
+        if (!img) return;
+        img.remove();
+        el.style.position = el.dataset.prevPosition || '';
+        delete el.dataset.prevPosition;
+      });
+    }
+
+    window.addEventListener('beforeprint', prepareChartsForPrint);
+    window.addEventListener('afterprint', cleanUpAfterPrint);
+  </script>
+</body>
+</html>
